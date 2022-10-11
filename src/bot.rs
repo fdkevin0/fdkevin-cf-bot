@@ -29,7 +29,6 @@ type CommandFn<'a> =
 #[derive(Clone)]
 pub struct Bot<'a> {
     token: String,
-    username: String,
     kv_store: String,
     commands: HashMap<String, CommandFn<'a>>,
 }
@@ -42,10 +41,9 @@ pub struct WebhookReply<T: Method> {
 }
 
 impl<'a> Bot<'a> {
-    pub fn new<S: AsRef<str>>(token: S, username: S, kv_store: S) -> Self {
+    pub fn new<S: AsRef<str>>(token: S, kv_store: S) -> Self {
         Self {
             token: token.as_ref().to_string(),
-            username: username.as_ref().to_string(),
             kv_store: kv_store.as_ref().to_string(),
             commands: HashMap::new(),
         }
@@ -133,28 +131,18 @@ impl<'a> Bot<'a> {
     //     Ok(())
     // }
 
-    pub fn get_username(&self) -> String {
-        self.username.clone()
-    }
-
     pub fn new_with_env<S: AsRef<str>>(
         env: &Env,
         var_token: S,
-        var_username: S,
         var_kv_store: S,
     ) -> Result<Self, WorkerError> {
         Ok(Self::new(
             env.secret(var_token.as_ref())?.to_string(),
-            env.var(var_username.as_ref())?.to_string(),
             env.var(var_kv_store.as_ref())?.to_string(),
         ))
     }
 
     pub async fn setup_webhook<S: AsRef<str>>(&self, url: S) -> Result<(), WorkerError> {
-        let user = self.get_me().await?;
-        if user.username.expect("WTF, a bot without username???") != self.username {
-            return Err(WorkerError::RustError("Username mismatched".to_string()));
-        }
         let payload = DeleteWebhook;
         let mut result = self.send_json_request(payload, RequestMethod::Post).await?;
         info!(
@@ -192,11 +180,7 @@ impl<'a> Bot<'a> {
         for (command, func) in &self.commands {
             // `/start bruh` and `/start@blablabot bruh`
             let command_prefix = format!("/{}", command.to_ascii_lowercase());
-            let command_prefix_extended = format!(
-                "{}@{}",
-                command_prefix,
-                self.get_username().to_ascii_lowercase()
-            );
+            let command_prefix_extended = format!("{}@THE_BOT_USERNAME", command_prefix,);
             if (message_command == command_prefix) || (message_command == command_prefix_extended) {
                 info!("Command matched: {}", command);
                 return func(m, env, self.clone()).await;

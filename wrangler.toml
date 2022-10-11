@@ -1,32 +1,20 @@
-name = "title-bot"
-type = "javascript"
-compatibility_date = "2022-04-17"
-
+name = "fdkevin-bot"
 workers_dev = true
 
+main = "build/worker/shim.mjs"
+compatibility_date = "2022-04-17"
+account_id = "98010e731e09a77b673ba51074dfbe1c"
+
 kv_namespaces = [
-    { binding = "TITLE_BOT_STORE", id = "195939744e4645a6bc74bc5e5b64d2c3" }
+    { binding = "FDKEVIN_BOT_STORE", id = "01605f3317e04e12a264ece57b1974dc", preview_id = "0d7979d1548d41c78dee40c2f2acc073" },
 ]
 
 [vars]
 WORKERS_RS_VERSION = "0.0.9"
-USERNAME = "SaltedFishBot"
-KV_STORE = "TITLE_BOT_STORE"
+KV_STORE = "FDKEVIN_BOT_STORE"
 
 [build]
 command = "cargo install -q worker-build && worker-build --release" # required
-
-[build.upload]
-dir = "build/worker"
-format = "modules"
-main = "./shim.mjs"
-
-[[build.upload.rules]]
-globs = ["**/*.wasm"]
-type = "CompiledWasm"
-
-[triggers]
-crons = [ "* * * * *" ]
 
 # read more about configuring your Worker via wrangler.toml at:
 # https://developers.cloudflare.com/workers/cli-wrangler/configuration

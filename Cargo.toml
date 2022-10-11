@@ -1,7 +1,7 @@
 [package]
-name = "title-bot"
+name = "fdkevin-bot"
 version = "0.1.0"
-authors = ["Kay Lin <i@v2bv.net>"]
+authors = ["FDKevin <i@fdke.vin>"]
 edition = "2021"
 
 [lib]
@@ -15,8 +15,8 @@ log = "^0.4"
 serde = { version = "^1.0", features = ["derive"] }
 chrono = "^0.4"
 cfg-if = "^1.0"
-# worker = { git = "https://github.com/njaremko/workers-rs", branch = "improve-errors" }
 worker = "0.0.9"
+sha2 = "0.10.6"
 bincode = "^1.3"
 futures = "^0.3"
 chrono-tz = "^0.6"
