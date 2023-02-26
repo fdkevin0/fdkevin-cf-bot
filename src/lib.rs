@@ -8,7 +8,7 @@ use worker::{event, Date, Env, Error as WorkerError, Request, Response, Router};
 
 use bot::Bot;
 
-const DEFAULT_SECRET_TOKEN: &str = "API_TOKEN";
+pub const TELEGRAM_API_TOKEN: &str = "TELEGRAM_API_TOKEN";
 const VAR_KV_STORE: &str = "KV_STORE";
 
 cfg_if! {
@@ -36,17 +36,19 @@ pub async fn main_inner(
     env: Env,
     _ctx: worker::Context,
 ) -> Result<Response, WorkerError> {
-    worker_logger::init_with_string("info");
     log_request(&req);
     set_panic_hook();
 
     // Bot
-    let mut bot = Bot::new_with_env(&env, DEFAULT_SECRET_TOKEN, VAR_KV_STORE)?;
+    let mut bot = Bot::new_with_env(&env, TELEGRAM_API_TOKEN, VAR_KV_STORE)?;
     bot.register_command("echo", command::echo);
     bot.register_command("start", command::start);
     bot.register_command("chat_info", command::chat_info);
+    bot.register_command("help", command::help);
+    bot.register_command("fetch", command::fetch);
+    // bot.register_command("sync_commands", command::sync_commands);
 
-    let tg_bot_token_sha256 = sha256(env.secret(DEFAULT_SECRET_TOKEN.as_ref())?.to_string());
+    let tg_bot_token_sha256 = sha256(env.secret(TELEGRAM_API_TOKEN.as_ref())?.to_string());
 
     // Router
     let router = Router::with_data(bot)
@@ -77,6 +79,14 @@ fn sha256(token: String) -> String {
 
 #[event(fetch)]
 pub async fn main(req: Request, env: Env, ctx: worker::Context) -> Result<Response, WorkerError> {
+    // match bot2::main_inner2(req, env, ctx).await {
+    //     Ok(res) => Ok(res),
+    //     Err(e) => {
+    //         error!("Error occurred: {}", e);
+    //         Ok(Response::from_html(format!("Internal Server Error: {}", e))
+    //             .expect("Bruh, what just happened?"))
+    //     }
+    // }
     match main_inner(req, env, ctx).await {
         Ok(res) => Ok(res),
         Err(e) => {
@@ -85,4 +95,10 @@ pub async fn main(req: Request, env: Env, ctx: worker::Context) -> Result<Respon
                 .expect("Bruh, what just happened?"))
         }
     }
+}
+
+#[test]
+fn test_sha256() {
+    let token = "476884080:AAH-qyccfEpbCh8Pr1bw-wXL67EWGTW337I";
+    println!("{}", sha256(token.to_string()))
 }

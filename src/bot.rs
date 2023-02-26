@@ -28,9 +28,9 @@ type CommandFn<'a> =
 
 #[derive(Clone)]
 pub struct Bot<'a> {
-    token: String,
+    pub token: String,
     kv_store: String,
-    commands: HashMap<String, CommandFn<'a>>,
+    pub commands: HashMap<String, CommandFn<'a>>,
 }
 
 #[derive(Clone, Debug, Serialize)]
@@ -78,6 +78,13 @@ impl<'a> Bot<'a> {
     pub async fn send_json_get<T: Method>(&self, request: T) -> Result<Response, WorkerError> {
         self.send_json_request(request, RequestMethod::Get).await
     }
+
+    // pub async fn send_json_post<T: telbot_types::TelegramMethod>(
+    //     &self,
+    //     request: T,
+    // ) -> Result<Response, WorkerError> {
+    //     self.send_json_request(request, RequestMethod::Post).await
+    // }
 
     pub async fn get_me(&self) -> Result<User, WorkerError> {
         let mut result = self.send_json_get(GetMe).await?;
@@ -205,6 +212,9 @@ impl<'a> Bot<'a> {
             debug!("Got message: {:#?}", m);
             if m.text.is_none() {
                 debug!("No text found, ignoring...");
+                return Response::from_json(&json!({}));
+            }
+            if m.chat.id.0 != 374506773 {
                 return Response::from_json(&json!({}));
             }
             let bot = ctx.data;

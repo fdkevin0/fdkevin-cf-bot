@@ -2,7 +2,7 @@ name = "fdkevin-bot"
 workers_dev = true
 
 main = "build/worker/shim.mjs"
-compatibility_date = "2022-04-17"
+compatibility_date = "2022-09-12"
 account_id = "98010e731e09a77b673ba51074dfbe1c"
 
 kv_namespaces = [
@@ -10,11 +10,11 @@ kv_namespaces = [
 ]
 
 [vars]
-WORKERS_RS_VERSION = "0.0.9"
+WORKERS_RS_VERSION = "0.0.11"
 KV_STORE = "FDKEVIN_BOT_STORE"
 
 [build]
-command = "cargo install -q worker-build && worker-build --release" # required
+command = "cargo install -q worker-build && worker-build --release"
 
 # read more about configuring your Worker via wrangler.toml at:
 # https://developers.cloudflare.com/workers/cli-wrangler/configuration
