@@ -10,12 +10,10 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v3
-      - name: Install latest stable
-        uses: actions-rs/toolchain@v1
-        with:
-            toolchain: stable
-            override: true
-            default: true
+      - name: setup rustup
+        run: |
+          curl https://sh.rustup.rs -sSf | sh
+
       - name: cloudflare workers publish
         uses: cloudflare/wrangler-action@2.0.0
         with:
