@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: setup rustup
         run: |
-          curl https://sh.rustup.rs -sSf | sh
+          curl https://sh.rustup.rs -sSf | bash -s -- -y
 
       - name: cloudflare workers publish
         uses: cloudflare/wrangler-action@2.0.0
