@@ -13,6 +13,7 @@ jobs:
       - name: setup rustup
         run: |
           curl https://sh.rustup.rs -sSf | bash -s -- -y
+          source "$HOME/.cargo/env"
 
       - name: cloudflare workers publish
         uses: cloudflare/wrangler-action@2.0.0
