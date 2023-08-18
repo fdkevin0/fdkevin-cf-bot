@@ -1,0 +1,15 @@
+name: build and test
+on:
+  pull_request:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: build and test
+        run: cargo install -q worker-build && worker-build --release

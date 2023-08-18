@@ -7,13 +7,11 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v3
-      - name: setup rustup
-        run: |
-          curl https://sh.rustup.rs -sSf | bash -s -- -y
-          source "$HOME/.cargo/env"
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
 
       - name: cloudflare workers publish
         uses: cloudflare/wrangler-action@v3.1.0
