@@ -16,7 +16,7 @@ jobs:
           source "$HOME/.cargo/env"
 
       - name: cloudflare workers publish
-        uses: cloudflare/wrangler-action@2.0.0
+        uses: cloudflare/wrangler-action@v3.1.0
         with:
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
           apiToken: ${{ secrets.CF_API_TOKEN }}
