@@ -1,0 +1,16 @@
+name: deploy to cloudflare workers
+on:
+  pull_request:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: setup rustup
+        run: |
+          curl https://sh.rustup.rs -sSf | bash -s -- -y
+          source "$HOME/.cargo/env"
+
+      - name: build and test
+        run: cargo install -q worker-build && worker-build --release
