@@ -14,7 +14,7 @@ default = ["console_error_panic_hook"]
 log = "0.4.20"
 serde = { version = "1.0.183", features = ["derive"] }
 cfg-if = "1.0.0"
-worker = "0.0.11"
+worker = "0.0.16"
 sha2 = "0.10.7"
 futures = "0.3.28"
 serde_json = "1.0.105"
