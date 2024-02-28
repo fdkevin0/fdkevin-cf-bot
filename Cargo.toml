@@ -11,7 +11,7 @@ crate-type = ["cdylib", "rlib"]
 default = ["console_error_panic_hook"]
 
 [dependencies]
-log = "0.4.20"
+log = "0.4.21"
 serde = { version = "1.0.188", features = ["derive"] }
 cfg-if = "1.0.0"
 worker = "0.0.18"
