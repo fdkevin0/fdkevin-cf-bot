@@ -18,7 +18,7 @@ worker = "0.0.18"
 sha2 = "0.10.7"
 futures = "0.3.28"
 serde_json = "1.0.105"
-telegram_types = "0.6.0"
+telegram_types = "0.7.0"
 console_error_panic_hook = { version = "0.1.7", optional = true }
 
 [profile.release]
